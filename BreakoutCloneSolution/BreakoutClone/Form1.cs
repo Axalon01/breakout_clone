@@ -4,6 +4,8 @@ namespace BreakoutClone
 	public partial class Form1 : Form
 	{
 		private GameManager gameManager; //Reference to the GameManager class
+		private Ball ball;
+		private Paddle paddle;
 		public Form1()
 		{
 			InitializeComponent();
@@ -37,12 +39,12 @@ namespace BreakoutClone
 			{
 				gameManager.goLeft = true;
 			}
-			else if ( e.KeyCode == Keys.Right)
+			else if (e.KeyCode == Keys.Right)
 			{
 				gameManager.goRight = true;
 			}
 		}
-
+		
 		// Key up event to stop paddle
 		private void KeyIsUp(object sender, KeyEventArgs e)
 		{
@@ -63,15 +65,56 @@ namespace BreakoutClone
 			if (gameManager.IsPaused)
 			{
 				GameTimer.Stop();
-				waveOutEvent.Volume = gameManager.PausedVolume;
+				//waveOutEvent.Volume = gameManager.PausedVolume;
 			}
 			else
 			{
 				GameTimer.Start();
-				waveOutEvent.Volume = gameManager.SetVolume;
+				//waveOutEvent.Volume = gameManager.SetVolume;
 			}
 
 			this.Invalidate(); //Force the form to repaint
+		}
+
+		private void GameTimerEvent(object sender, EventArgs e)
+		{
+			if (IsPaused)
+			{
+				return;
+
+				UpdateBallPosition();
+				UpdateScoreText();
+				CheckBallCollisions();
+				AdjustPaddle();
+				CheckGameOver();
+
+				this.Invalidate();
+			}
+		}
+
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+
+			//Enable anti-aliasing for smoother graphics
+			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+			//Draw the ball with a glow
+			using (SolidBrush glowBrush = new SolidBrush(Color.FromArgb(100, Color.GhostWhite)))
+			{
+				e.Graphics.FillEllipse(glowBrush, ball.ballX - 3, ball.ballY - 3, ball.ballSize + 6, ball.ballSize + 6);
+			}
+
+			e.Graphics.FillEllipse(Brushes.GhostWhite, ball.ballX, ball.ballY, ball.ballSize, ball.ballSize);
+			e.Graphics.DrawEllipse(Pens.Black, ball.ballX, ball.ballY, ball.ballSize, ball.ballSize);
+
+			//Draw the paddle with rounded corners
+			DrawRoundedRectangle(e.Graphics, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
+
+			//Draw semi-transparent overlay when paused
+
+
+			//Draw the "Paused" text
 		}
 	}
 }
