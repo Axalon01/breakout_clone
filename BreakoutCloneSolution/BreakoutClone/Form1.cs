@@ -80,17 +80,31 @@ namespace BreakoutClone
 
 		private void GameTimerEvent(object sender, EventArgs e)
 		{
-			if (IsPaused)
-			{
+			if (gameManager.IsPaused)
+			
 				return;
 
 				UpdateBallPosition();
 				UpdateScoreText();
 				CheckBallCollisions();
 				AdjustPaddle();
-				CheckGameOver();
+				gameManager.CheckGameOver();
 
 				this.Invalidate();
+			
+		}
+
+		private void UpdateScoreText()
+		{
+			throw new NotImplementedException();
+		}
+
+		private void UpdateBallPosition()
+		{
+			if (ball.isLaunched == true)
+			{
+				//ball.BallX -= ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
+				ball.BallY -= ball.BallYSpeed;
 			}
 		}
 

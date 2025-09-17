@@ -23,7 +23,7 @@ namespace BreakoutClone
 		public bool goLeft, goRight;
 		int playerSpeed = 12; //Sets default player speed
 
-		private void CheckGameOver()
+		public void CheckGameOver()
 		{
 			if (lives == 0)
 			{
