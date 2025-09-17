@@ -19,7 +19,7 @@ namespace BreakoutClone
 			}
 		}
 		public bool IsPaused { get; set; } = false;
-		private bool showPauseOverplay = false;
+		public bool showPauseOverlay => IsPaused;
 		public bool goLeft, goRight;
 		int playerSpeed = 12; //Sets default player speed
 

@@ -1,4 +1,6 @@
 
+using System.Drawing.Drawing2D;
+
 namespace BreakoutClone
 {
 	public partial class Form1 : Form
@@ -112,9 +114,36 @@ namespace BreakoutClone
 			DrawRoundedRectangle(e.Graphics, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
 
 			//Draw semi-transparent overlay when paused
+			if (gameManager.showPauseOverlay)
+			{
+				using (SolidBrush overlayBrush = new SolidBrush(Color.FromArgb(100, Color.Black)))
+				{
+					e.Graphics.FillRectangle(overlayBrush, this.ClientRectangle);
+				}
 
+				//Draw the "Paused" text
+			}
+		}
 
-			//Draw the "Paused" text
+		private void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
+		{
+			using (GraphicsPath path = new GraphicsPath())
+			{
+				path.AddArc(x, y, radius, radius, 90, 180);
+				path.AddArc(x + width - radius, y, radius, radius, 90, 270);
+				path.AddArc(x + width - radius, y + height - radius, radius, radius, 0, 90);
+				path.AddArc(x, y + height - radius, radius, radius, 90, 90);
+				path.CloseFigure();
+
+				//Fill the rounded rectangle
+				g.FillPath(brush, path);
+
+				//Draw the outline of the rounded rectangle
+				using (Pen pen = new Pen(Color.Black, 2))
+				{
+					g.DrawPath(pen, path);
+				}
+			}
 		}
 	}
 }
