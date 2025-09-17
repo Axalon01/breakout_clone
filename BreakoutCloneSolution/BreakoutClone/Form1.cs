@@ -104,11 +104,11 @@ namespace BreakoutClone
 			//Draw the ball with a glow
 			using (SolidBrush glowBrush = new SolidBrush(Color.FromArgb(100, Color.GhostWhite)))
 			{
-				e.Graphics.FillEllipse(glowBrush, ball.ballX - 3, ball.ballY - 3, ball.ballSize + 6, ball.ballSize + 6);
+				e.Graphics.FillEllipse(glowBrush, ball.BallX - 3, ball.BallY - 3, ball.BallSize + 6, ball.BallSize + 6);
 			}
 
-			e.Graphics.FillEllipse(Brushes.GhostWhite, ball.ballX, ball.ballY, ball.ballSize, ball.ballSize);
-			e.Graphics.DrawEllipse(Pens.Black, ball.ballX, ball.ballY, ball.ballSize, ball.ballSize);
+			e.Graphics.FillEllipse(Brushes.GhostWhite, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+			e.Graphics.DrawEllipse(Pens.Black, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
 
 			//Draw the paddle with rounded corners
 			DrawRoundedRectangle(e.Graphics, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
