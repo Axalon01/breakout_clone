@@ -31,6 +31,8 @@ namespace BreakoutClone
 			gameManager = new GameManager(); //Create the game manager object
 			ball = new Ball();
 			paddle = new Paddle();
+
+			this.BackColor = Color.Black;
 		}
 
 		private void InitializeCustomComponents()
@@ -205,10 +207,15 @@ namespace BreakoutClone
 		{
 			using (GraphicsPath path = new GraphicsPath())
 			{
-				path.AddArc(x, y, radius, radius, 90, 180);
-				path.AddArc(x + width - radius, y, radius, radius, 90, 270);
+				//Top left corner
+				path.AddArc(x, y, radius, radius, 180, 90);
+				//Top edge + top-right corner
+				path.AddArc(x + width - radius, y, radius, radius, 270, 90);
+				//Right edge + bottom-right corner
 				path.AddArc(x + width - radius, y + height - radius, radius, radius, 0, 90);
+				//Bottom edge + bottom-left corner
 				path.AddArc(x, y + height - radius, radius, radius, 90, 90);
+
 				path.CloseFigure();
 
 				//Fill the rounded rectangle
