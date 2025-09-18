@@ -162,7 +162,28 @@ namespace BreakoutClone
 		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
 			int paddleWidth, int paddleHeight, int offset)
 		{
-			throw new NotImplementedException();
+			Rectangle ballRect = new Rectangle(ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+			Rectangle paddleRect = new Rectangle(paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight);
+
+			if (ballRect.IntersectsWith(paddleRect))
+			{
+				//Ball hit the top of the paddle
+				ball.BallX = paddle.paddleY - ball.BallSize;
+				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
+			}
+
+			//Tweak X speed depending on where it hit the paddle
+			int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
+			int ballCenterX = ball.BallX + (ball.BallSize / 2);
+
+			int offsetFromCenter = ballCenterX - paddleCenter;
+
+			//Cause the ball trajectory to change depending on where it hit
+			if (offsetFromCenter < 0)
+
+				ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
+			else
+				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
 		}
 
 		private void UpdateScoreText()
