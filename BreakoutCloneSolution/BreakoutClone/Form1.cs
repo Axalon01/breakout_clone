@@ -13,6 +13,13 @@ namespace BreakoutClone
 			InitializeComponent();
 			InitializeCustomComponents();
 			SetInitialWindowSizeAndPosition();
+
+			//Hook up to the GameOver event
+			gameManager.GameOverTriggered += (s, e) =>
+				{
+					GameTimer.Stop();
+					Application.Exit();
+				};
 		}
 
 		private void SetInitialWindowSizeAndPosition()
@@ -92,6 +99,59 @@ namespace BreakoutClone
 
 				this.Invalidate();
 			
+		}
+
+		private void AdjustPaddle()
+		{
+			//Keep the paddle inside the screen
+			paddle.paddleX = Math.Max(0, Math.Min(paddle.paddleX, this.ClientSize.Width
+				- paddle.paddleWidth));
+
+			if (gameManager.goLeft && paddle.paddleX > 0)
+			{
+				paddle.paddleX -= gameManager.PlayerSpeed;
+			}
+
+			if (gameManager.goRight && paddle.paddleX + paddle.paddleWidth < this.ClientSize.Width)
+			{
+				paddle.paddleX += gameManager.PlayerSpeed;
+			}
+		}
+
+		private void CheckBallCollisions()
+		{
+			//Bounce off left and right walls
+			if (ball.BallX < 0 || ball.BallX + ball.BallSize > this.ClientSize.Width)
+			{
+				ball.BallXSpeed = -ball.BallXSpeed;
+			}
+
+			//Bounce off top of screen
+			if (ball.BallY < 0)
+			{
+				ball.BallYSpeed = -ball.BallYSpeed;
+			}
+
+			else
+			{
+				ResetBallPosition(true);
+				gameManager.lives--;
+				ball.isLaunched = false;
+			}
+
+			//Check collision with paddle
+			CheckCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
+				paddle.paddleWidth, paddle.paddleHeight);
+		}
+
+		private void ResetBallPosition(bool v)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY, int paddleWidth, int paddleHeight)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void UpdateScoreText()

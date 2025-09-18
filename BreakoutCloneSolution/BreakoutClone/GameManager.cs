@@ -8,8 +8,10 @@ namespace BreakoutClone
 {
 	public class GameManager
 	{
-		private int lives = 3;
-		private int score = 0;
+		Ball ball;
+
+		public int lives { get; set; } = 3;
+		private int score { get; set; } = 0;
 		public float SetVolume { get; set; } = 0.7f; // Can be changed later, like by the user
 		public float PausedVolume
 		{
@@ -21,13 +23,13 @@ namespace BreakoutClone
 		public bool IsPaused { get; set; } = false;
 		public bool showPauseOverlay => IsPaused;
 		public bool goLeft, goRight;
-		int playerSpeed = 12; //Sets default player speed
+		public int PlayerSpeed { get; private set; } = 12; //Sets default player speed
 
 		public void CheckGameOver()
 		{
 			if (lives == 0)
 			{
-				GameOver("Out of lives. Better luck nenxt time.");
+				GameOver("Out of lives. Better luck next time.");
 			}
 			else if (score == 864)
 			{
@@ -37,11 +39,18 @@ namespace BreakoutClone
 
 		private void GameOver(string message)
 		{
-			GameTimer.Stop();
 			MessageBox.Show(message);
-			ResetGameState();
-			GameTimer.Start();
-			Application.Exit();
+			//ResetGameState();
+			GameOverTriggered?.Invoke(this, EventArgs.Empty);
+		}
+
+		public event EventHandler GameOverTriggered;
+
+		private void ResetGameState()
+		{
+			score = 0;
+			lives = 3;
+			ball.BallXSpeed = ball.BallYSpeed = Ball.InitialBallSpeed;
 		}
 	}
 }
