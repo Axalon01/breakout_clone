@@ -9,11 +9,11 @@ namespace BreakoutClone
 	public class Paddle
 	{
 		//Paddle size
-		public int paddleWidth { get; set; } = 30;
-		public int paddleHeight { get; set; } = 120;
+		public int paddleWidth { get; set; } = 120;
+		public int paddleHeight { get; set; } = 30;
 
 		//Paddle position
-		public int paddleX { get; set; } = 0;
-		public int paddleY { get; set; } = 0; //Will need to actually set these later
+		public int paddleX { get; set; } = 300;
+		public int paddleY { get; set; } = 500;
 	}
 }

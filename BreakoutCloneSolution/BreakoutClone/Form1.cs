@@ -29,6 +29,8 @@ namespace BreakoutClone
 			this.ClientSize = new Size(800, 600);
 
 			gameManager = new GameManager(); //Create the game manager object
+			ball = new Ball();
+			paddle = new Paddle();
 		}
 
 		private void InitializeCustomComponents()
