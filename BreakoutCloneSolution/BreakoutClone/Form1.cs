@@ -151,7 +151,7 @@ namespace BreakoutClone
 
 			//Check collision with paddle
 			CheckCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
-				paddle.paddleWidth, paddle.paddleHeight);
+				paddle.paddleWidth, paddle.paddleHeight, Paddle.paddleOffset);
 		}
 
 		private void ResetBallPosition(bool v)
@@ -159,7 +159,8 @@ namespace BreakoutClone
 			throw new NotImplementedException();
 		}
 
-		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY, int paddleWidth, int paddleHeight)
+		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
+			int paddleWidth, int paddleHeight, int offset)
 		{
 			throw new NotImplementedException();
 		}
