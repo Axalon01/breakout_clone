@@ -142,7 +142,7 @@ namespace BreakoutClone
 				ball.BallYSpeed = -ball.BallYSpeed;
 			}
 
-			else
+			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
 			{
 				ResetBallPosition(true);
 				gameManager.lives--;
