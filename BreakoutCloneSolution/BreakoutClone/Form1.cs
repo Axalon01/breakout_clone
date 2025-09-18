@@ -151,7 +151,7 @@ namespace BreakoutClone
 
 			//Check collision with paddle
 			CheckCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
-				paddle.paddleWidth, paddle.paddleHeight, Paddle.paddleOffset);
+				paddle.paddleWidth, paddle.paddleHeight, paddle.paddleOffset);
 		}
 
 		private void ResetBallPosition(bool v)

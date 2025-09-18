@@ -13,7 +13,7 @@ namespace BreakoutClone
 		public int paddleHeight { get; set; } = 30;
 
 		// To prevent the ball from getting stuck in the paddle
-		public const int paddleOffset = 5;
+		public readonly int paddleOffset = 5;
 
 		//Paddle position
 		public int paddleX { get; set; } = 300;
