@@ -32,6 +32,12 @@
 			GameTimer = new System.Windows.Forms.Timer(components);
 			SuspendLayout();
 			// 
+			// GameTimer
+			// 
+			GameTimer.Enabled = true;
+			GameTimer.Interval = 20;
+			GameTimer.Tick += GameTimerEvent;
+			// 
 			// Form1
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);

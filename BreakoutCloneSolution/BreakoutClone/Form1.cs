@@ -44,11 +44,17 @@ namespace BreakoutClone
 
 		private void OnKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Escape || e.KeyCode == Keys.Space)
+			if (e.KeyCode == Keys.Space)
+			{
+				ball.isLaunched = true;
+			}
+			
+			if (e.KeyCode == Keys.Escape)
 			{
 				TogglePause();
 			}
-			else if (e.KeyCode == Keys.Left)
+
+			if (e.KeyCode == Keys.Left)
 			{
 				gameManager.goLeft = true;
 			}
@@ -61,11 +67,11 @@ namespace BreakoutClone
 		// Key up event to stop paddle
 		private void KeyIsUp(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Down)
+			if (e.KeyCode == Keys.Left)
 			{
 				gameManager.goLeft = false;
 			}
-			else if (e.KeyCode == Keys.Up)
+			else if (e.KeyCode == Keys.Right)
 			{
 				gameManager.goRight = false;
 			}
