@@ -102,7 +102,7 @@ namespace BreakoutClone
 				return;
 
 				UpdateBallPosition();
-				UpdateScoreText();
+				//UpdateScoreText();
 				CheckBallCollisions();
 				AdjustPaddle();
 				gameManager.CheckGameOver();
@@ -144,7 +144,7 @@ namespace BreakoutClone
 
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
 			{
-				ResetBallPosition(true);
+				//ResetBallPosition(true);
 				gameManager.lives--;
 				ball.isLaunched = false;
 			}
@@ -154,10 +154,10 @@ namespace BreakoutClone
 				paddle.paddleWidth, paddle.paddleHeight, paddle.paddleOffset);
 		}
 
-		private void ResetBallPosition(bool v)
-		{
-			throw new NotImplementedException();
-		}
+		//private void ResetBallPosition(bool v)
+		//{
+		//	throw new NotImplementedException();
+		//}
 
 		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
 			int paddleWidth, int paddleHeight, int offset)
@@ -186,10 +186,10 @@ namespace BreakoutClone
 				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
 		}
 
-		private void UpdateScoreText()
-		{
-			throw new NotImplementedException();
-		}
+		//private void UpdateScoreText()
+		//{
+		//	throw new NotImplementedException();
+		//}
 
 		private void UpdateBallPosition()
 		{

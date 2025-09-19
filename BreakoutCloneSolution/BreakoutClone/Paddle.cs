@@ -10,13 +10,13 @@ namespace BreakoutClone
 	{
 		//Paddle size
 		public int paddleWidth { get; set; } = 120;
-		public int paddleHeight { get; set; } = 30;
+		public int paddleHeight { get; set; } = 15;
 
 		// To prevent the ball from getting stuck in the paddle
 		public readonly int paddleOffset = 5;
 
 		//Paddle position
-		public int paddleX { get; set; } = 300;
-		public int paddleY { get; set; } = 500;
+		public int paddleX { get; set; } = 334;
+		public int paddleY { get; set; } = 525;
 	}
 }
