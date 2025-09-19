@@ -47,6 +47,13 @@ namespace BreakoutClone
 			if (e.KeyCode == Keys.Space)
 			{
 				ball.isLaunched = true;
+
+				//Launch ball straight up
+				ball.BallYSpeed = -Ball.InitialBallSpeed;
+
+				//Randomize X direction
+				Random rand = new Random();
+				ball.BallXSpeed = (rand.Next(0, 2) == 0 ? -1 : 1) * Ball.InitialBallSpeed;
 			}
 			
 			if (e.KeyCode == Keys.Escape)
@@ -130,16 +137,25 @@ namespace BreakoutClone
 
 		private void CheckBallCollisions()
 		{
-			//Bounce off left and right walls
-			if (ball.BallX < 0 || ball.BallX + ball.BallSize > this.ClientSize.Width)
+			//Bounce off left wall
+			if (ball.BallX < 0)
 			{
-				ball.BallXSpeed = -ball.BallXSpeed;
+				ball.BallX = 0;
+				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
+			}
+
+			//Bounce off right wall
+			if (ball.BallX + ball.BallSize > this.ClientSize.Width)
+			{
+				ball.BallX = this.ClientSize.Width - ball.BallSize;
+				ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
 			}
 
 			//Bounce off top of screen
 			if (ball.BallY < 0)
 			{
-				ball.BallYSpeed = -ball.BallYSpeed;
+				ball.BallY = 0;
+				ball.BallYSpeed = Math.Abs(ball.BallYSpeed);
 			}
 
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
@@ -154,10 +170,10 @@ namespace BreakoutClone
 				paddle.paddleWidth, paddle.paddleHeight, paddle.paddleOffset);
 		}
 
-		//private void ResetBallPosition(bool v)
-		//{
-		//	throw new NotImplementedException();
-		//}
+		////private void resetballposition(bool v)
+		////{
+		////	throw new notimplementedexception();
+		////}
 
 		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
 			int paddleWidth, int paddleHeight, int offset)
@@ -168,14 +184,13 @@ namespace BreakoutClone
 			if (ballRect.IntersectsWith(paddleRect))
 			{
 				//Ball hit the top of the paddle
-				ball.BallX = paddle.paddleY - ball.BallSize;
+				ball.BallY = paddle.paddleY - ball.BallSize - paddle.paddleOffset;
 				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
 			}
 
 			//Tweak X speed depending on where it hit the paddle
 			int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
 			int ballCenterX = ball.BallX + (ball.BallSize / 2);
-
 			int offsetFromCenter = ballCenterX - paddleCenter;
 
 			//Cause the ball trajectory to change depending on where it hit
@@ -195,8 +210,8 @@ namespace BreakoutClone
 		{
 			if (ball.isLaunched == true)
 			{
-				//ball.BallX -= ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
-				ball.BallY -= ball.BallYSpeed;
+				ball.BallX += ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
+				ball.BallY += ball.BallYSpeed;
 			}
 		}
 
