@@ -102,7 +102,7 @@ namespace BreakoutClone
 				return;
 
 				UpdateBallPosition();
-				UpdateScoreText();
+				//UpdateScoreText();
 				CheckBallCollisions();
 				AdjustPaddle();
 				gameManager.CheckGameOver();
@@ -156,7 +156,8 @@ namespace BreakoutClone
 
 		private void ResetBallPosition(bool v)
 		{
-			throw new NotImplementedException();
+			ball.BallX = paddle.paddleX + paddle.paddleWidth / 2 - ball.BallSize / 2;
+			ball.BallX = paddle.paddleY - ball.BallSize;
 		}
 
 		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
@@ -165,40 +166,46 @@ namespace BreakoutClone
 			Rectangle ballRect = new Rectangle(ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
 			Rectangle paddleRect = new Rectangle(paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight);
 
-			if (ballRect.IntersectsWith(paddleRect))
+			if (ballRect.IntersectsWith(paddleRect) && !gameManager.collisionCooldown)
 			{
 				//Ball hit the top of the paddle
-				ball.BallX = paddle.paddleY - ball.BallSize;
-				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
+				ball.BallY = paddle.paddleY - ball.BallSize;
+				ball.BallYSpeed = -ball.BallYSpeed;
 			}
 
-			//Tweak X speed depending on where it hit the paddle
+			//Calculate where on the paddle the ball hit (as a ratio from -1 to 1)
 			int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
 			int ballCenterX = ball.BallX + (ball.BallSize / 2);
+			float offsetFromCenter = ballCenterX;
 
-			int offsetFromCenter = ballCenterX - paddleCenter;
+			//Set X speed based on hit position
+			float hitRatio = (float)offsetFromCenter / (paddle.paddleWidth / 2);
+			hitRatio = Math.Max(-1f, Math.Min(1f, hitRatio)); //Clamp between -1 and 1
 
-			//Cause the ball trajectory to change depending on where it hit
-			if (offsetFromCenter < 0)
-
-				ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
-			else
-				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
-		}
-
-		private void UpdateScoreText()
-		{
-			throw new NotImplementedException();
+			ball.BallXSpeed = (int)(hitRatio * 4); //Multiply by desired max X speed
 		}
 
 		private void UpdateBallPosition()
 		{
 			if (ball.isLaunched == true)
 			{
-				//ball.BallX -= ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
-				ball.BallY -= ball.BallYSpeed;
+				ball.BallX += ball.BallXSpeed;
+				ball.BallY += ball.BallYSpeed;
+			}
+
+			//Reset collision cooldown when ball moves away from paddle
+			if (ball.BallY < paddle.paddleY - ball.BallSize - 10)
+			{
+				gameManager.collisionCooldown = false;
 			}
 		}
+
+		//private void UpdateScoreText()
+		//{
+		//	throw new NotImplementedException();
+		//}
+
+
 
 		protected override void OnPaint(PaintEventArgs e)
 		{

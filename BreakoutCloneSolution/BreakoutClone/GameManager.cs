@@ -26,6 +26,7 @@ namespace BreakoutClone
 		public int PlayerSpeed { get; private set; } = 12; //Sets default player speed
 		//To make the ball go off screen before disappearing
 		public int BottomBoundaryOffset { get; private set; } = 30;
+		public bool collisionCooldown = false;
 
 		public void CheckGameOver()
 		{
