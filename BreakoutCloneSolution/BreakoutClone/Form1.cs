@@ -1,5 +1,6 @@
 
 using System.Drawing.Drawing2D;
+using System.Reflection.PortableExecutable;
 
 namespace BreakoutClone
 {
@@ -161,12 +162,9 @@ namespace BreakoutClone
 
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
 			{
-				if (ball.isLaunched)
-				{
-                    gameManager.lives--;
-                    ball.isLaunched = false;
-                    //ResetBallPosition(true);
-                }
+
+                gameManager.lives--;
+                ResetBallPosition();
             }
 
 			//Check collision with paddle
@@ -174,10 +172,22 @@ namespace BreakoutClone
 				paddle.paddleWidth, paddle.paddleHeight, paddle.paddleOffset);
 		}
 
-		////private void resetballposition(bool v)
-		////{
-		////	throw new notimplementedexception();
-		////}
+		private void ResetBallPosition()
+		{
+			ball.isLaunched = false;
+
+
+            //Center the paddle on the screen
+            paddle.paddleX = (this.ClientSize.Width / 2) - (paddle.paddleWidth / 2);
+
+            //Center the ball on the paddle
+            ball.BallX = paddle.paddleX + (paddle.paddleWidth / 2) - (ball.BallSize / 2);
+            ball.BallY = paddle.paddleY - ball.BallSize;
+
+            //Speeds reset to 0 until player launches again
+            ball.BallXSpeed = 0;
+            ball.BallYSpeed = 0;
+        }
 
 		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
 			int paddleWidth, int paddleHeight, int offset)
