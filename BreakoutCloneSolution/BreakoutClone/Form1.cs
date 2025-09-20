@@ -242,31 +242,68 @@ namespace BreakoutClone
 			//Enable anti-aliasing for smoother graphics
 			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-			//Draw the ball with a glow
-			using (SolidBrush glowBrush = new SolidBrush(Color.FromArgb(100, Color.GhostWhite)))
-			{
-				e.Graphics.FillEllipse(glowBrush, ball.BallX - 3, ball.BallY - 3, ball.BallSize + 6, ball.BallSize + 6);
-			}
+			DrawBall(e.Graphics);
+			DrawPaddle(e.Graphics);
+			DrawPauseOverlay(e.Graphics);
+            DrawLives(e.Graphics);
+			Drawscore(e.Graphics);
+        }
 
-			e.Graphics.FillEllipse(Brushes.GhostWhite, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
-			e.Graphics.DrawEllipse(Pens.Black, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+		private void DrawBall(Graphics g)
+		{
+            //Draw the ball with a glow
+            using (SolidBrush glowBrush = new SolidBrush(Color.FromArgb(100, Color.GhostWhite)))
+            {
+                g.FillEllipse(glowBrush, ball.BallX - 3, ball.BallY - 3, ball.BallSize + 6, ball.BallSize + 6);
+            }
 
-			//Draw the paddle with rounded corners
-			DrawRoundedRectangle(e.Graphics, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
+            g.FillEllipse(Brushes.GhostWhite, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+            g.DrawEllipse(Pens.Black, ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+        }
 
+		private void DrawPaddle(Graphics g)
+		{
+            //Draw the paddle with rounded corners
+            DrawRoundedRectangle(g, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
+        }
+
+		private void DrawPauseOverlay(Graphics g)
+		{
 			//Draw semi-transparent overlay when paused
 			if (gameManager.showPauseOverlay)
 			{
 				using (SolidBrush overlayBrush = new SolidBrush(Color.FromArgb(100, Color.Black)))
 				{
-					e.Graphics.FillRectangle(overlayBrush, this.ClientRectangle);
+					g.FillRectangle(overlayBrush, this.ClientRectangle);
 				}
 
-				//Draw the "Paused" text
-			}
+                //Draw the "Paused" text
+                Font pausedFont = new Font("Impact",28);
+                string pausedText = "Paused";
+                SizeF textSize = g.MeasureString(pausedText, pausedFont);
+                PointF textPosition = new PointF((this.ClientSize.Width - textSize.Width) / 2, (this.ClientSize.Height - textSize.Height) / 2);
+                g.DrawString(pausedText, pausedFont, Brushes.White, textPosition);
+            }
 		}
 
-		private void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
+		private void DrawLives(Graphics g)
+		{
+			Font livesFont = new Font("Consolas", 14);
+			string liveText = $"{gameManager.lives} ";
+            SizeF textSize = g.MeasureString(liveText, livesFont);
+			PointF livesPosition = new PointF(this.ClientSize.Width - textSize.Width - 10, 10); //Right and top side padding
+			g.DrawString(liveText, livesFont, Brushes.White, livesPosition);
+        }
+
+		private void Drawscore(Graphics g)
+		{
+			Font scoreFont = new Font("Conslas", 14);
+			string scoreText = $"{gameManager.score}";
+			SizeF textSize = g.MeasureString(scoreText, scoreFont);
+			PointF scorePosition = new PointF(10, 10);
+			g.DrawString(scoreText, scoreFont, Brushes.White, scorePosition);
+		}
+        private void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
 		{
 			using (GraphicsPath path = new GraphicsPath())
 			{

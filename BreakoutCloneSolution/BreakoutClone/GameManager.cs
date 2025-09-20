@@ -11,7 +11,7 @@ namespace BreakoutClone
 		Ball ball;
 
 		public int lives { get; set; } = 3;
-		private int score { get; set; } = 0;
+		public int score { get; set; } = 0;
 		public float SetVolume { get; set; } = 0.7f; // Can be changed later, like by the user
 		public float PausedVolume
 		{
