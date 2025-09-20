@@ -6,7 +6,7 @@ namespace BreakoutClone
 {
 	public partial class Form1 : Form
 	{
-		private GameManager gameManager; //Reference to the GameManager class
+		private GameManager gameManager;
 		private Ball ball;
 		private Paddle paddle;
         private readonly Random rng = new Random();
@@ -35,9 +35,10 @@ namespace BreakoutClone
 			paddle = new Paddle();
 
 			this.BackColor = Color.Black;
-		}
+            this.DoubleBuffered = true;
+        }
 
-		private void InitializeCustomComponents()
+        private void InitializeCustomComponents()
 		{
 			this.KeyDown += new KeyEventHandler(OnKeyDown);
 			this.KeyUp += new KeyEventHandler(KeyIsUp);
