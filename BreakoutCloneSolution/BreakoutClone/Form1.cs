@@ -28,11 +28,17 @@ namespace BreakoutClone
 		{
 			this.FormBorderStyle = FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
-			this.ClientSize = new Size(800, 600);
+			this.ClientSize = new Size(1024, 768);
 
-			gameManager = new GameManager();
-			ball = new Ball();
-			paddle = new Paddle();
+            gameManager = new GameManager();
+            ball = new Ball();
+            paddle = new Paddle();
+
+            paddle.paddleX = (this.ClientSize.Width - paddle.paddleWidth) / 2;
+			paddle.paddleY = (this.ClientSize.Height - paddle.paddleHeight) - 30; //30px above the bottom
+
+			ball.BallX = (this.ClientSize.Width - ball.BallSize) / 2;
+			ball.BallY = paddle.paddleY - ball.BallSize;
 
 			this.BackColor = Color.Black;
             this.DoubleBuffered = true;
