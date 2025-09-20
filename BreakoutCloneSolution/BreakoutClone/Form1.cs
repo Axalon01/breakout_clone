@@ -161,10 +161,13 @@ namespace BreakoutClone
 
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
 			{
-				//ResetBallPosition(true);
-				gameManager.lives--;
-				ball.isLaunched = false;
-			}
+				if (ball.isLaunched)
+				{
+                    gameManager.lives--;
+                    ball.isLaunched = false;
+                    //ResetBallPosition(true);
+                }
+            }
 
 			//Check collision with paddle
 			CheckCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,

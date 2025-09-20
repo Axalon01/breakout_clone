@@ -27,7 +27,7 @@ namespace BreakoutClone
 		//To make the ball go off screen before disappearing
 		public int BottomBoundaryOffset { get; private set; } = 30;
 
-		public void CheckGameOver()
+        public void CheckGameOver()
 		{
 			if (lives == 0)
 			{
