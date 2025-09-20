@@ -8,7 +8,8 @@ namespace BreakoutClone
 		private GameManager gameManager; //Reference to the GameManager class
 		private Ball ball;
 		private Paddle paddle;
-		public Form1()
+        private readonly Random rng = new Random();
+        public Form1()
 		{
 			InitializeComponent();
 			InitializeCustomComponents();
@@ -28,7 +29,7 @@ namespace BreakoutClone
 			this.MaximizeBox = false;
 			this.ClientSize = new Size(800, 600);
 
-			gameManager = new GameManager(); //Create the game manager object
+			gameManager = new GameManager();
 			ball = new Ball();
 			paddle = new Paddle();
 
@@ -52,8 +53,8 @@ namespace BreakoutClone
 				ball.BallYSpeed = -Ball.InitialBallSpeed;
 
 				//Randomize X direction
-				Random rand = new Random();
-				ball.BallXSpeed = (rand.Next(0, 2) == 0 ? -1 : 1) * Ball.InitialBallSpeed;
+				int direction = rng.Next(0, 2) == 0 ? 1 : -1;
+				ball.BallXSpeed = direction * Ball.InitialBallSpeed;
 			}
 			
 			if (e.KeyCode == Keys.Escape)
@@ -141,8 +142,8 @@ namespace BreakoutClone
 			if (ball.BallX < 0)
 			{
 				ball.BallX = 0;
-				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
-			}
+                ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
+            }
 
 			//Bounce off right wall
 			if (ball.BallX + ball.BallSize > this.ClientSize.Width)
@@ -186,19 +187,19 @@ namespace BreakoutClone
 				//Ball hit the top of the paddle
 				ball.BallY = paddle.paddleY - ball.BallSize - paddle.paddleOffset;
 				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
-			}
 
-			//Tweak X speed depending on where it hit the paddle
-			int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
-			int ballCenterX = ball.BallX + (ball.BallSize / 2);
-			int offsetFromCenter = ballCenterX - paddleCenter;
+                //Tweak X speed depending on where it hit the paddle
+                int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
+                int ballCenterX = ball.BallX + (ball.BallSize / 2);
+                int offsetFromCenter = ballCenterX - paddleCenter;
 
-			//Cause the ball trajectory to change depending on where it hit
-			if (offsetFromCenter < 0)
+                //Cause the ball trajectory to change depending on where it hit
+                if (offsetFromCenter < 0)
 
-				ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
-			else
-				ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
+                    ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
+                else
+                    ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
+            }
 		}
 
 		//private void UpdateScoreText()
