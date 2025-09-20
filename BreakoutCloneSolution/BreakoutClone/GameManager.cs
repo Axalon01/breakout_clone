@@ -26,15 +26,20 @@ namespace BreakoutClone
 		public int PlayerSpeed { get; private set; } = 12; //Sets default player speed
 		//To make the ball go off screen before disappearing
 		public int BottomBoundaryOffset { get; private set; } = 30;
+        private bool gameOverTriggered = false;
 
         public void CheckGameOver()
 		{
+			if (gameOverTriggered) return;
+
 			if (lives == 0)
 			{
+				gameOverTriggered = true;
 				GameOver("Out of lives. Better luck next time.");
 			}
 			else if (score == 864)
 			{
+				gameOverTriggered = true;
 				GameOver("Congrats! You bashed all those bricks!");
 			}
 		}

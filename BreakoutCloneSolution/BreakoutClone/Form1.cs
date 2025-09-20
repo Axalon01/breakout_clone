@@ -176,7 +176,6 @@ namespace BreakoutClone
 		{
 			ball.isLaunched = false;
 
-
             //Center the paddle on the screen
             paddle.paddleX = (this.ClientSize.Width / 2) - (paddle.paddleWidth / 2);
 
@@ -226,6 +225,12 @@ namespace BreakoutClone
 			{
 				ball.BallX += ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
 				ball.BallY += ball.BallYSpeed;
+			}
+			else
+			{
+				//Follow the paddle before launching
+				ball.BallX = paddle.paddleX + (paddle.paddleWidth / 2) - (ball.BallSize / 2);
+				ball.BallY = paddle.paddleY - ball.BallSize;
 			}
 		}
 
