@@ -36,11 +36,11 @@ namespace BreakoutClone
             paddle = new Paddle();
 			brick = new Brick();
 
-            paddle.paddleX = (this.ClientSize.Width - paddle.PaddleWidth) / 2;
-			paddle.paddleY = (this.ClientSize.Height - paddle.PaddleHeight) - 30; //30px above the bottom
+            paddle.PaddleX = (this.ClientSize.Width - paddle.PaddleWidth) / 2;
+			paddle.PaddleY = (this.ClientSize.Height - paddle.PaddleHeight) - 30; //30px above the bottom
 
 			ball.BallX = (this.ClientSize.Width - ball.BallSize) / 2;
-			ball.BallY = paddle.paddleY - ball.BallSize;
+			ball.BallY = paddle.PaddleY - ball.BallSize;
 
 			this.BackColor = Color.Black;
             this.DoubleBuffered = true;
@@ -132,17 +132,17 @@ namespace BreakoutClone
 		private void AdjustPaddle()
 		{
 			//Keep the paddle inside the screen
-			paddle.paddleX = Math.Max(0, Math.Min(paddle.paddleX, this.ClientSize.Width
+			paddle.PaddleX = Math.Max(0, Math.Min(paddle.PaddleX, this.ClientSize.Width
 				- paddle.PaddleWidth));
 
-			if (gameManager.goLeft && paddle.paddleX > 0)
+			if (gameManager.goLeft && paddle.PaddleX > 0)
 			{
-				paddle.paddleX -= gameManager.PlayerSpeed;
+				paddle.PaddleX -= gameManager.PlayerSpeed;
 			}
 
-			if (gameManager.goRight && paddle.paddleX + paddle.PaddleWidth < this.ClientSize.Width)
+			if (gameManager.goRight && paddle.PaddleX + paddle.PaddleWidth < this.ClientSize.Width)
 			{
-				paddle.paddleX += gameManager.PlayerSpeed;
+				paddle.PaddleX += gameManager.PlayerSpeed;
 			}
 		}
 
@@ -177,7 +177,7 @@ namespace BreakoutClone
             }
 
 			//Check collision with paddle
-			CheckPaddleCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
+			CheckPaddleCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.PaddleX, paddle.PaddleY,
 				paddle.PaddleWidth, paddle.PaddleHeight, paddle.paddleOffset);
 		}
 
@@ -186,11 +186,11 @@ namespace BreakoutClone
 			ball.isLaunched = false;
 
             //Center the paddle on the screen
-            paddle.paddleX = (this.ClientSize.Width / 2) - (paddle.PaddleWidth / 2);
+            paddle.PaddleX = (this.ClientSize.Width / 2) - (paddle.PaddleWidth / 2);
 
             //Center the ball on the paddle
-            ball.BallX = paddle.paddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
-            ball.BallY = paddle.paddleY - ball.BallSize;
+            ball.BallX = paddle.PaddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
+            ball.BallY = paddle.PaddleY - ball.BallSize;
 
             //Speeds reset to 0 until player launches again
             ball.BallXSpeed = 0;
@@ -201,16 +201,16 @@ namespace BreakoutClone
 			int paddleWidth, int paddleHeight, int offset)
 		{
 			Rectangle ballRect = new Rectangle(ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
-			Rectangle paddleRect = new Rectangle(paddle.paddleX, paddle.paddleY, paddle.PaddleWidth, paddle.PaddleHeight);
+			Rectangle paddleRect = new Rectangle(paddle.PaddleX, paddle.PaddleY, paddle.PaddleWidth, paddle.PaddleHeight);
 
 			if (ballRect.IntersectsWith(paddleRect))
 			{
 				//Ball hit the top of the paddle
-				ball.BallY = paddle.paddleY - ball.BallSize - paddle.paddleOffset;
+				ball.BallY = paddle.PaddleY - ball.BallSize - paddle.paddleOffset;
 				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
 
                 //Tweak X speed depending on where it hit the paddle
-                int paddleCenter = paddle.paddleX + (paddle.PaddleWidth / 2);
+                int paddleCenter = paddle.PaddleX + (paddle.PaddleWidth / 2);
                 int ballCenterX = ball.BallX + (ball.BallSize / 2);
                 int offsetFromCenter = ballCenterX - paddleCenter;
 
@@ -238,8 +238,8 @@ namespace BreakoutClone
 			else
 			{
 				//Follow the paddle before launching
-				ball.BallX = paddle.paddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
-				ball.BallY = paddle.paddleY - ball.BallSize;
+				ball.BallX = paddle.PaddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
+				ball.BallY = paddle.PaddleY - ball.BallSize;
 			}
 		}
 
@@ -273,7 +273,7 @@ namespace BreakoutClone
 		private void DrawPaddle(Graphics g)
 		{
             //Draw the paddle with rounded corners
-            DrawRoundedRectangle(g, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.PaddleWidth, paddle.PaddleHeight, 10);
+            DrawRoundedRectangle(g, Brushes.Silver, paddle.PaddleX, paddle.PaddleY, paddle.PaddleWidth, paddle.PaddleHeight, 10);
         }
 
 		private void DrawPauseOverlay(Graphics g)

@@ -17,7 +17,7 @@ namespace BreakoutClone
 		public readonly int paddleOffset = 5;
 
 		//Paddle position
-		public int paddleX { get; set; }
-		public int paddleY { get; set; }
+		public int PaddleX { get; set; }
+		public int PaddleY { get; set; }
 	}
 }
