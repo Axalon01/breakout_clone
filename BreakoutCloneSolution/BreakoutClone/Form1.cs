@@ -29,7 +29,7 @@ namespace BreakoutClone
 		{
 			this.FormBorderStyle = FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
-			this.ClientSize = new Size(1024, 768);
+			this.ClientSize = new Size(927, 768);
 
             gameManager = new GameManager();
             ball = new Ball();
@@ -343,15 +343,19 @@ namespace BreakoutClone
 		{
 			int rows = 8;
 			int cols = 14;
-			int brickWidth = 60;
+			int brickWidth = 62;
 			int brickHeight = 30;
+			int paddingX = 4;
+			int paddingY = 4;
+			int marginX = 4;
+			int marginY = 70;
 
 			for (int row = 0; row < rows; row++)
 			{
 				for (int col = 0; col < cols; col++)
 				{
-					int x = col * brickWidth;
-					int y = row * brickHeight;
+					int x = marginX + col * (brickWidth + paddingX);
+					int y = marginY + row * (brickHeight + paddingY);
 
 					brick = new Brick
 					{
