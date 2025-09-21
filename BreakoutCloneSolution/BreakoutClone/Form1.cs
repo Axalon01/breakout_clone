@@ -353,6 +353,15 @@ namespace BreakoutClone
 					int x = col * brickWidth;
 					int y = row * brickHeight;
 
+					brick = new Brick
+					{
+						X = x,
+						Y = y,
+						Width = brickWidth,
+						Height = brickHeight,
+						Brush = Brushes.Blue
+					};
+
 					brick.Draw(g);
 				}
 			}
