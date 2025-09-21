@@ -341,7 +341,12 @@ namespace BreakoutClone
 		//Loop to draw the whole wall of bricks
 		private void DrawBricks(Graphics g)
 		{
-			int rows = 8;
+            Brush[] rowColors = { Brushes.Red, Brushes.Pink, Brushes.Orange, Brushes.Yellow, Brushes.Green,
+				Brushes.Navy, Brushes.Purple, Brushes.Blue};
+
+
+
+            int rows = 8;
 			int cols = 14;
 			int brickWidth = 62;
 			int brickHeight = 30;
@@ -357,13 +362,16 @@ namespace BreakoutClone
 					int x = marginX + col * (brickWidth + paddingX);
 					int y = marginY + row * (brickHeight + paddingY);
 
-					brick = new Brick
+					Brush brushForThisRow = rowColors[row];
+
+
+                    brick = new Brick
 					{
 						X = x,
 						Y = y,
 						Width = brickWidth,
 						Height = brickHeight,
-						Brush = Brushes.Blue
+						Brush = brushForThisRow
 					};
 
 					brick.Draw(g);
