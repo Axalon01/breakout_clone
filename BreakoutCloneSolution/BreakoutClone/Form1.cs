@@ -9,6 +9,7 @@ namespace BreakoutClone
 		private GameManager gameManager;
 		private Ball ball;
 		private Paddle paddle;
+		private Brick brick;
         private readonly Random rng = new Random();
         public Form1()
 		{
@@ -33,6 +34,7 @@ namespace BreakoutClone
             gameManager = new GameManager();
             ball = new Ball();
             paddle = new Paddle();
+			brick = new Brick();
 
             paddle.paddleX = (this.ClientSize.Width - paddle.paddleWidth) / 2;
 			paddle.paddleY = (this.ClientSize.Height - paddle.paddleHeight) - 30; //30px above the bottom
@@ -230,7 +232,7 @@ namespace BreakoutClone
 		{
 			if (ball.isLaunched == true)
 			{
-				ball.BallX += ball.BallXSpeed;	//Figure out how to send a ball into a randon X direction later
+				ball.BallX += ball.BallXSpeed;
 				ball.BallY += ball.BallYSpeed;
 			}
 			else
@@ -253,6 +255,7 @@ namespace BreakoutClone
 			DrawPauseOverlay(e.Graphics);
             DrawLives(e.Graphics);
 			Drawscore(e.Graphics);
+			DrawBricks(e.Graphics);
         }
 
 		private void DrawBall(Graphics g)
@@ -331,6 +334,26 @@ namespace BreakoutClone
 				using (Pen pen = new Pen(Color.Black, 2))
 				{
 					g.DrawPath(pen, path);
+				}
+			}
+		}
+
+		//Loop to draw the whole wall of bricks
+		private void DrawBricks(Graphics g)
+		{
+			int rows = 8;
+			int cols = 14;
+			int brickWidth = 60;
+			int brickHeight = 30;
+
+			for (int row = 0; row < rows; row++)
+			{
+				for (int col = 0; col < cols; col++)
+				{
+					int x = col * brickWidth;
+					int y = row * brickHeight;
+
+					brick.Draw(g);
 				}
 			}
 		}
