@@ -36,8 +36,8 @@ namespace BreakoutClone
             paddle = new Paddle();
 			brick = new Brick();
 
-            paddle.paddleX = (this.ClientSize.Width - paddle.paddleWidth) / 2;
-			paddle.paddleY = (this.ClientSize.Height - paddle.paddleHeight) - 30; //30px above the bottom
+            paddle.paddleX = (this.ClientSize.Width - paddle.PaddleWidth) / 2;
+			paddle.paddleY = (this.ClientSize.Height - paddle.PaddleHeight) - 30; //30px above the bottom
 
 			ball.BallX = (this.ClientSize.Width - ball.BallSize) / 2;
 			ball.BallY = paddle.paddleY - ball.BallSize;
@@ -133,14 +133,14 @@ namespace BreakoutClone
 		{
 			//Keep the paddle inside the screen
 			paddle.paddleX = Math.Max(0, Math.Min(paddle.paddleX, this.ClientSize.Width
-				- paddle.paddleWidth));
+				- paddle.PaddleWidth));
 
 			if (gameManager.goLeft && paddle.paddleX > 0)
 			{
 				paddle.paddleX -= gameManager.PlayerSpeed;
 			}
 
-			if (gameManager.goRight && paddle.paddleX + paddle.paddleWidth < this.ClientSize.Width)
+			if (gameManager.goRight && paddle.paddleX + paddle.PaddleWidth < this.ClientSize.Width)
 			{
 				paddle.paddleX += gameManager.PlayerSpeed;
 			}
@@ -177,8 +177,8 @@ namespace BreakoutClone
             }
 
 			//Check collision with paddle
-			CheckCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
-				paddle.paddleWidth, paddle.paddleHeight, paddle.paddleOffset);
+			CheckPaddleCollision(ball.BallX, ball.BallY, ball.BallSize, paddle.paddleX, paddle.paddleY,
+				paddle.PaddleWidth, paddle.PaddleHeight, paddle.paddleOffset);
 		}
 
 		private void ResetBallPosition()
@@ -186,10 +186,10 @@ namespace BreakoutClone
 			ball.isLaunched = false;
 
             //Center the paddle on the screen
-            paddle.paddleX = (this.ClientSize.Width / 2) - (paddle.paddleWidth / 2);
+            paddle.paddleX = (this.ClientSize.Width / 2) - (paddle.PaddleWidth / 2);
 
             //Center the ball on the paddle
-            ball.BallX = paddle.paddleX + (paddle.paddleWidth / 2) - (ball.BallSize / 2);
+            ball.BallX = paddle.paddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
             ball.BallY = paddle.paddleY - ball.BallSize;
 
             //Speeds reset to 0 until player launches again
@@ -197,11 +197,11 @@ namespace BreakoutClone
             ball.BallYSpeed = 0;
         }
 
-		private void CheckCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
+		private void CheckPaddleCollision(int ballX, int ballY, int ballSize, int paddleX, int paddleY,
 			int paddleWidth, int paddleHeight, int offset)
 		{
 			Rectangle ballRect = new Rectangle(ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
-			Rectangle paddleRect = new Rectangle(paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight);
+			Rectangle paddleRect = new Rectangle(paddle.paddleX, paddle.paddleY, paddle.PaddleWidth, paddle.PaddleHeight);
 
 			if (ballRect.IntersectsWith(paddleRect))
 			{
@@ -210,7 +210,7 @@ namespace BreakoutClone
 				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
 
                 //Tweak X speed depending on where it hit the paddle
-                int paddleCenter = paddle.paddleX + (paddle.paddleWidth / 2);
+                int paddleCenter = paddle.paddleX + (paddle.PaddleWidth / 2);
                 int ballCenterX = ball.BallX + (ball.BallSize / 2);
                 int offsetFromCenter = ballCenterX - paddleCenter;
 
@@ -238,7 +238,7 @@ namespace BreakoutClone
 			else
 			{
 				//Follow the paddle before launching
-				ball.BallX = paddle.paddleX + (paddle.paddleWidth / 2) - (ball.BallSize / 2);
+				ball.BallX = paddle.paddleX + (paddle.PaddleWidth / 2) - (ball.BallSize / 2);
 				ball.BallY = paddle.paddleY - ball.BallSize;
 			}
 		}
@@ -273,7 +273,7 @@ namespace BreakoutClone
 		private void DrawPaddle(Graphics g)
 		{
             //Draw the paddle with rounded corners
-            DrawRoundedRectangle(g, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.paddleWidth, paddle.paddleHeight, 10);
+            DrawRoundedRectangle(g, Brushes.Silver, paddle.paddleX, paddle.paddleY, paddle.PaddleWidth, paddle.PaddleHeight, 10);
         }
 
 		private void DrawPauseOverlay(Graphics g)
@@ -367,10 +367,10 @@ namespace BreakoutClone
 
                     brick = new Brick
 					{
-						X = x,
-						Y = y,
-						Width = brickWidth,
-						Height = brickHeight,
+						BrickX = x,
+						BrickY = y,
+						BrickWidth = brickWidth,
+						BrickHeight = brickHeight,
 						Brush = brushForThisRow
 					};
 
