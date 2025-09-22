@@ -56,37 +56,41 @@ namespace BreakoutClone
 			this.KeyPreview = true; // Ensures the form receives key events
 		}
 
-		private void OnKeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.KeyCode == Keys.Space)
-			{
-				ball.isLaunched = true;
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!ball.isLaunched)
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    ball.isLaunched = true;
 
-				//Launch ball straight up
-				ball.BallYSpeed = -Ball.InitialBallSpeed;
+                    // Launch ball straight up
+                    ball.BallYSpeed = -Ball.InitialBallSpeed;
 
-				//Randomize X direction
-				int direction = rng.Next(0, 2) == 0 ? 1 : -1;
-				ball.BallXSpeed = direction * Ball.InitialBallSpeed;
-			}
-			
-			if (e.KeyCode == Keys.Escape)
-			{
-				TogglePause();
-			}
+                    // Randomize X direction
+                    int direction = rng.Next(0, 2) == 0 ? 1 : -1;
+                    ball.BallXSpeed = direction * Ball.InitialBallSpeed;
+                }
+            }
 
-			if (e.KeyCode == Keys.Left)
-			{
-				gameManager.goLeft = true;
-			}
-			else if (e.KeyCode == Keys.Right)
-			{
-				gameManager.goRight = true;
-			}
-		}
-		
-		// Key up event to stop paddle
-		private void KeyIsUp(object sender, KeyEventArgs e)
+            if (e.KeyCode == Keys.Escape)
+            {
+                TogglePause();
+            }
+
+            if (e.KeyCode == Keys.Left)
+            {
+                gameManager.goLeft = true;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                gameManager.goRight = true;
+            }
+        }
+
+
+        // Key up event to stop paddle
+        private void KeyIsUp(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Left)
 			{
