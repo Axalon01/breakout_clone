@@ -123,10 +123,11 @@ namespace BreakoutClone
 				return;
 
 				UpdateBallPosition();
-				//UpdateScoreText();
 				CheckBallCollisions();
 				AdjustPaddle();
-				gameManager.CheckGameOver();
+				CheckBrickCollision();
+
+                gameManager.CheckGameOver();
 
 				this.Invalidate();
 			
@@ -148,6 +149,48 @@ namespace BreakoutClone
 				paddle.PaddleX += gameManager.PlayerSpeed;
 			}
 		}
+
+		private void CheckBrickCollision()
+		{
+
+			for (int row = 0; row < bricks.GetLength(0); row++)
+			{
+				for (int col = 0; col < bricks.GetLength(1); col++)
+				{
+					Brick brick = bricks[row, col];
+					if (brick == null || brick.IsDestroyed) continue;
+
+					Rectangle ballRect = new Rectangle(ball.BallX, ball.BallY, ball.BallSize, ball.BallSize);
+					Rectangle brickRect = new Rectangle(brick.BrickX, brick.BrickY, brick.BrickWidth, brick.BrickHeight);
+
+					if (ballRect.IntersectsWith(brickRect))
+					{
+						// Calculate horizontal overlap
+						int overlapX = Math.Min(ballRect.Right - brickRect.Left, brickRect.Right - ballRect.Left);
+
+						// Calculate vertical overlap
+						int overlapY = Math.Min(ballRect.Bottom - brickRect.Top, brickRect.Bottom - ballRect.Top);
+
+						// Decide which side to bounce
+						if (overlapX < overlapY)
+						{
+							// Hit from left or right ¨ flip X
+							ball.BallXSpeed = -ball.BallXSpeed;
+						}
+						else
+						{
+							// Hit from top or bottom ¨ flip Y
+							ball.BallYSpeed = -ball.BallYSpeed;
+						}
+
+						brick.IsDestroyed = true;
+						gameManager.Score++;
+					}
+				}
+			}
+		}
+
+
 
 		private void CheckBallCollisions()
 		{
@@ -175,7 +218,7 @@ namespace BreakoutClone
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
 			{
 
-                gameManager.lives--;
+                gameManager.Lives--;
                 ResetBallPosition();
             }
 
@@ -225,11 +268,6 @@ namespace BreakoutClone
                     ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
             }
 		}
-
-		//private void UpdateScoreText()
-		//{
-		//	throw new NotImplementedException();
-		//}
 
 		private void UpdateBallPosition()
 		{
@@ -282,7 +320,7 @@ namespace BreakoutClone
 		private void DrawPauseOverlay(Graphics g)
 		{
 			//Draw semi-transparent overlay when paused
-			if (gameManager.showPauseOverlay)
+			if (gameManager.ShowPauseOverlay)
 			{
 				using (SolidBrush overlayBrush = new SolidBrush(Color.FromArgb(100, Color.Black)))
 				{
@@ -301,7 +339,7 @@ namespace BreakoutClone
 		private void DrawLives(Graphics g)
 		{
 			Font livesFont = new Font("Consolas", 14);
-			string liveText = $"{gameManager.lives} ";
+			string liveText = $"{gameManager.Lives} ";
             SizeF textSize = g.MeasureString(liveText, livesFont);
 			PointF livesPosition = new PointF(this.ClientSize.Width - textSize.Width - 10, 10); //Right and top side padding
 			g.DrawString(liveText, livesFont, Brushes.White, livesPosition);
@@ -310,7 +348,7 @@ namespace BreakoutClone
 		private void Drawscore(Graphics g)
 		{
 			Font scoreFont = new Font("Conslas", 14);
-			string scoreText = $"{gameManager.score}";
+			string scoreText = $"{gameManager.Score}";
 			SizeF textSize = g.MeasureString(scoreText, scoreFont);
 			PointF scorePosition = new PointF(10, 10);
 			g.DrawString(scoreText, scoreFont, Brushes.White, scorePosition);

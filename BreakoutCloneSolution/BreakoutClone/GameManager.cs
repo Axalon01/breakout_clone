@@ -10,8 +10,8 @@ namespace BreakoutClone
 	{
 		Ball ball;
 
-		public int lives { get; set; } = 3;
-		public int score { get; set; } = 0;
+		public int Lives { get; set; } = 3;
+		public int Score { get; set; } = 0;
 		public float SetVolume { get; set; } = 0.7f; // Can be changed later, like by the user
 		public float PausedVolume
 		{
@@ -21,9 +21,9 @@ namespace BreakoutClone
 			}
 		}
 		public bool IsPaused { get; set; } = false;
-		public bool showPauseOverlay => IsPaused;
+		public bool ShowPauseOverlay => IsPaused;
 		public bool goLeft, goRight;
-		public int PlayerSpeed { get; private set; } = 12; //Sets default player speed
+		public int PlayerSpeed { get; private set; } = 15; //Sets default player speed
 		//To make the ball go off screen before disappearing
 		public int BottomBoundaryOffset { get; private set; } = 30;
         private bool gameOverTriggered = false;
@@ -32,12 +32,12 @@ namespace BreakoutClone
 		{
 			if (gameOverTriggered) return;
 
-			if (lives == 0)
+			if (Lives == 0)
 			{
 				gameOverTriggered = true;
 				GameOver("Out of lives. Better luck next time.");
 			}
-			else if (score == 864)
+			else if (Score == 864)
 			{
 				gameOverTriggered = true;
 				GameOver("Congrats! You bashed all those bricks!");
@@ -55,8 +55,8 @@ namespace BreakoutClone
 
 		private void ResetGameState()
 		{
-			score = 0;
-			lives = 3;
+			Score = 0;
+			Lives = 3;
 			ball.BallXSpeed = ball.BallYSpeed = Ball.InitialBallSpeed;
 		}
 	}
