@@ -264,12 +264,37 @@ namespace BreakoutClone
                 int ballCenterX = ball.BallX + (ball.BallSize / 2);
                 int offsetFromCenter = ballCenterX - paddleCenter;
 
-                //Cause the ball trajectory to change depending on where it hit
-                if (offsetFromCenter < 0)
+				//Normalize to -1 t0 +1
+				float relativeOffset = (float)offsetFromCenter / (paddle.PaddleWidth / 2);
 
-                    ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
-                else
-                    ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
+				//Use current speed
+				int totalSpeed = ball.CurrentBallSpeed;
+
+                //Calculate new X and Y speeds
+                ball.BallXSpeed = (int)(relativeOffset * totalSpeed);
+
+                //Keep the speed constant by adjusting Y
+                int xSquared = ball.BallXSpeed * ball.BallXSpeed;
+				int ySquared = (totalSpeed * totalSpeed) - xSquared;
+
+				//Safety check (avoid square root of negative if rounding errors happen)
+				if (ySquared < 0) ySquared = 0;
+
+				ball.BallYSpeed = -(int)Math.Sqrt(ySquared); //Negative so it always goes upward
+
+				// --- Clamps to prevent boring/infinite loops ---
+
+				//Prevent perfectly verticle bounces
+				if (ball.BallXSpeed == 0)
+				{
+					ball.BallXSpeed = rng.Next(0, 2) == 0 ? 1 : -1; //Tiny nudge left or right
+				}
+
+				//Prevent completely horizontal bounces
+				if (Math.Abs(ball.BallYSpeed) < 2)
+				{
+					ball.BallYSpeed = ball.BallYSpeed < 0 ? -2 : 2; //Force at least two upward
+				}
             }
 		}
 
@@ -357,7 +382,7 @@ namespace BreakoutClone
 			PointF scorePosition = new PointF(10, 10);
 			g.DrawString(scoreText, scoreFont, Brushes.White, scorePosition);
 		}
-        private void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
+        private static void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
 		{
 			using (GraphicsPath path = new GraphicsPath())
 			{

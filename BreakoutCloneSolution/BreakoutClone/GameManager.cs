@@ -23,7 +23,7 @@ namespace BreakoutClone
 		public bool IsPaused { get; set; } = false;
 		public bool ShowPauseOverlay => IsPaused;
 		public bool goLeft, goRight;
-		public int PlayerSpeed { get; private set; } = 16; //Sets default player speed
+		public int PlayerSpeed { get; private set; } = 14; //Sets default player speed
 		//To make the ball go off screen before disappearing
 		public int BottomBoundaryOffset { get; private set; } = 30;
         private bool gameOverTriggered = false;

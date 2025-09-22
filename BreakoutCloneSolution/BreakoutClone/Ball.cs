@@ -8,11 +8,13 @@ namespace BreakoutClone
 {
 	public class Ball
 	{
-		public const int InitialBallSpeed = 12;
+		public const int InitialBallSpeed = 14;
 		public const int BallResetPosition = 0; //Need to figure out the position
 		public int BallXSpeed { get; set; } = InitialBallSpeed;
 		public int BallYSpeed { get; set; } = InitialBallSpeed;
-		public int BallX { get; set; }
+        public int CurrentBallSpeed { get; set; } = InitialBallSpeed;
+
+        public int BallX { get; set; }
 		public int BallY { get; set; }
 		public int BallSize { get; private set; } = 20;
 
