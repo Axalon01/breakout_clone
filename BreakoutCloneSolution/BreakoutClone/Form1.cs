@@ -11,6 +11,7 @@ namespace BreakoutClone
 		private Paddle paddle;
 		private Brick brick;
         private readonly Random rng = new Random();
+		private Brick[,] bricks;
         public Form1()
 		{
 			InitializeComponent();
@@ -44,6 +45,8 @@ namespace BreakoutClone
 
 			this.BackColor = Color.Black;
             this.DoubleBuffered = true;
+
+			InitializeBricks();
         }
 
         private void InitializeCustomComponents()
@@ -339,12 +342,10 @@ namespace BreakoutClone
 		}
 
 		//Loop to draw the whole wall of bricks
-		private void DrawBricks(Graphics g)
+		private void InitializeBricks()
 		{
             Brush[] rowColors = { Brushes.Red, Brushes.Pink, Brushes.Orange, Brushes.Yellow, Brushes.Green,
 				Brushes.Navy, Brushes.Purple, Brushes.Blue};
-
-
 
             int rows = 8;
 			int cols = 14;
@@ -355,7 +356,10 @@ namespace BreakoutClone
 			int marginX = 4;
 			int marginY = 70;
 
-			for (int row = 0; row < rows; row++)
+			//Create 2D array
+			bricks = new Brick[rows, cols];
+
+            for (int row = 0; row < rows; row++)
 			{
 				for (int col = 0; col < cols; col++)
 				{
@@ -365,7 +369,7 @@ namespace BreakoutClone
 					Brush brushForThisRow = rowColors[row];
 
 
-                    brick = new Brick
+					bricks[row, col] = new Brick
 					{
 						BrickX = x,
 						BrickY = y,
@@ -373,8 +377,22 @@ namespace BreakoutClone
 						BrickHeight = brickHeight,
 						Brush = brushForThisRow
 					};
+				}
+			}
+		}
 
-					brick.Draw(g);
+		private void DrawBricks(Graphics g)
+		{
+			for (int row = 0; row < bricks.GetLength(0); row++)
+			{
+				for (int col = 0; col < bricks.GetLength(1); col++)
+				{
+					Brick brick = bricks[row, col];
+
+					if (brick != null && !brick.IsDestroyed)
+					{
+						brick.Draw(g);
+					}
 				}
 			}
 		}
