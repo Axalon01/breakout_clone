@@ -188,7 +188,7 @@ namespace BreakoutClone
 						}
 
 						brick.IsDestroyed = true;
-						gameManager.Score++;
+						gameManager.Score += brick.PointValue;
 					}
 				}
 			}
@@ -389,6 +389,8 @@ namespace BreakoutClone
             Brush[] rowColors = { Brushes.Red, Brushes.Pink, Brushes.Orange, Brushes.Yellow, Brushes.Green,
 				Brushes.Navy, Brushes.Purple, Brushes.Blue};
 
+			int[] pointsPerRow = { 8, 7, 6, 5, 4, 3, 2, 1 };
+
             int rows = 8;
 			int cols = 14;
 			int brickWidth = 62;
@@ -417,7 +419,8 @@ namespace BreakoutClone
 						BrickY = y,
 						BrickWidth = brickWidth,
 						BrickHeight = brickHeight,
-						Brush = brushForThisRow
+						Brush = brushForThisRow,
+						PointValue = pointsPerRow[row],
 					};
 				}
 			}

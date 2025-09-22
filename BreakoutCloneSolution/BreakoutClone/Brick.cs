@@ -14,6 +14,8 @@ namespace BreakoutClone
         public int BrickHeight { get; set; }
         public Brush Brush { get; set; }
 
+        public int PointValue { get; set; }
+
         public bool IsDestroyed { get; set; } = false;
 
         public void Draw(Graphics g)
