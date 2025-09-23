@@ -220,6 +220,7 @@ namespace BreakoutClone
 
 						brick.IsDestroyed = true;
 						gameManager.Score += brick.PointValue;
+						return;
 					}
 				}
 			}
@@ -301,11 +302,11 @@ namespace BreakoutClone
 				//Use current speed
 				int totalSpeed = ball.CurrentBallSpeed;
 
-                //Calculate new X and Y speeds
+				//Calculate new X and Y speeds
                 ball.BallXSpeed = (int)(relativeOffset * totalSpeed);
 
-                //Keep the speed constant by adjusting Y
-                int xSquared = ball.BallXSpeed * ball.BallXSpeed;
+				//Keep the speed constant by adjusting Y
+				int xSquared = ball.BallXSpeed * ball.BallXSpeed;
 				int ySquared = (totalSpeed * totalSpeed) - xSquared;
 
 				//Safety check (avoid square root of negative if rounding errors happen)
@@ -402,7 +403,7 @@ namespace BreakoutClone
 				}
 
                 //Draw the "Paused" text
-                Font pausedFont = new Font("Impact",28);
+                Font pausedFont = new Font("Impact",40);
                 string pausedText = "Paused";
                 SizeF textSize = g.MeasureString(pausedText, pausedFont);
                 PointF textPosition = new PointF((this.ClientSize.Width - textSize.Width) / 2, (this.ClientSize.Height - textSize.Height) / 2);
