@@ -1,5 +1,6 @@
 
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Reflection.PortableExecutable;
 
 namespace BreakoutClone
@@ -12,7 +13,14 @@ namespace BreakoutClone
 		private Brick brick;
         private readonly Random rng = new Random();
 		private Brick[,] bricks;
-        public Form1()
+
+		//Announcement text
+		private string announcementText = null;
+		private DateTime announcementStart;
+		private int announcementDuration = 2000; //Milliseconds
+		private bool pendingRepopulate = false;
+
+		public Form1()
 		{
 			InitializeComponent();
 			InitializeCustomComponents();
@@ -86,6 +94,16 @@ namespace BreakoutClone
             {
                 gameManager.goRight = true;
             }
+			else if (e.KeyCode == Keys.K)
+			{
+				for (int row = 0; row < bricks.GetLength(0); row++)
+				{
+					for (int col = 0;  col < bricks.GetLength(1); col++)
+					{
+						bricks[row, col].IsDestroyed = true;
+					}
+				}
+			}
         }
 
 
@@ -123,18 +141,31 @@ namespace BreakoutClone
 		private void GameTimerEvent(object sender, EventArgs e)
 		{
 			if (gameManager.IsPaused)
-			
+			{
 				return;
+			}
 
-				UpdateBallPosition();
-				CheckBallCollisions();
-				AdjustPaddle();
-				CheckBrickCollision();
-
-                gameManager.CheckGameOver();
-
-				this.Invalidate();
+			UpdateBallPosition();
+			CheckBallCollisions();
+			AdjustPaddle();
+			CheckBrickCollision();
 			
+			if (AllBricksDestroyed() && pendingRepopulate == false)
+			{
+				announcementText = "Round 2!";
+				announcementStart = DateTime.Now; // trigger repopulation after timer ends
+				pendingRepopulate = true;
+			}
+
+			if (pendingRepopulate && (DateTime.Now - announcementStart).TotalMilliseconds >= announcementDuration)
+			{
+				InitializeBricks();
+				pendingRepopulate = false;
+				ResetBallPosition();
+			}
+
+			gameManager.CheckGameOver();
+			this.Invalidate();
 		}
 
 		private void AdjustPaddle()
@@ -298,6 +329,19 @@ namespace BreakoutClone
             }
 		}
 
+		private bool AllBricksDestroyed()
+		{
+			for (int row = 0; row < bricks.GetLength(0); row++)
+			{
+				for (int col = 0; col < bricks.GetLength(1); col++)
+				{
+					if (bricks[row, col].IsDestroyed == false)
+						return false;
+				}
+			}
+			return true;
+		}
+
 		private void UpdateBallPosition()
 		{
 			if (ball.isLaunched == true)
@@ -326,6 +370,7 @@ namespace BreakoutClone
             DrawLives(e.Graphics);
 			Drawscore(e.Graphics);
 			DrawBricks(e.Graphics);
+			DrawAnnouncement(e.Graphics);
         }
 
 		private void DrawBall(Graphics g)
@@ -382,6 +427,29 @@ namespace BreakoutClone
 			PointF scorePosition = new PointF(10, 10);
 			g.DrawString(scoreText, scoreFont, Brushes.White, scorePosition);
 		}
+
+		private void DrawAnnouncement(Graphics g)
+		{
+
+			if (announcementText != null)
+			{
+				if ((DateTime.Now - announcementStart).TotalMilliseconds < announcementDuration)
+				{
+					using (Font font = new Font("Impact", 40))
+					{
+						SizeF textSize = g.MeasureString(announcementText, font);
+						float x = (this.ClientSize.Width - textSize.Width) / 2;
+						float y = (this.ClientSize.Height - textSize.Height) / 2;
+						g.DrawString(announcementText, font, Brushes.White, x, y);
+					}
+				}
+				else
+				{
+					announcementText = null;
+				}
+			}
+		}
+
         private static void DrawRoundedRectangle(Graphics g, Brush brush, int x, int y, int width, int height, int radius)
 		{
 			using (GraphicsPath path = new GraphicsPath())
