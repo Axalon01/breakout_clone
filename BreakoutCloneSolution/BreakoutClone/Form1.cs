@@ -20,6 +20,8 @@ namespace BreakoutClone
 		private int announcementDuration = 2000; //Milliseconds
 		private bool pendingRepopulate = false;
 
+		private bool awaitingRestart = false;
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -29,8 +31,12 @@ namespace BreakoutClone
 			//Hook up to the GameOver event
 			gameManager.GameOverTriggered += (s, e) =>
 				{
+					var args = (GameOverEventArgs)e;
+					ClearAllBricks();
+					announcementText = args.Message;
+					announcementStart = DateTime.Now;
 					GameTimer.Stop();
-					Application.Exit();
+					//Application.Exit();
 				};
 		}
 
@@ -104,6 +110,20 @@ namespace BreakoutClone
 					}
 				}
 			}
+			else if (e.KeyCode == Keys.Y)
+			{
+				//Reset game
+				gameManager.ResetGameState();
+				InitializeBricks();
+				ResetBallPosition();
+				awaitingRestart = false;
+				announcementText = null;
+				GameTimer.Start();
+			}
+			else if (e.KeyCode == Keys.N)
+			{
+				Application.Exit();
+			}
         }
 
 
@@ -149,7 +169,7 @@ namespace BreakoutClone
 			CheckBallCollisions();
 			AdjustPaddle();
 			CheckBrickCollision();
-			
+
 			if (AllBricksDestroyed() && pendingRepopulate == false)
 			{
 				announcementText = "Round 2!";
@@ -338,6 +358,17 @@ namespace BreakoutClone
 			}
 			return true;
 		}
+		private void ClearAllBricks()
+		{
+			for (int row = 0; row < bricks.GetLength(0); row++)
+			{
+				for (int col = 0; col < bricks.GetLength(1); col++)
+				{
+					bricks[row, col].IsDestroyed = true;
+				}
+			}
+		}
+
 
 		private void UpdateBallPosition()
 		{

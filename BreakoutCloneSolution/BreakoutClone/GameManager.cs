@@ -35,26 +35,36 @@ namespace BreakoutClone
 			if (Lives == 0)
 			{
 				gameOverTriggered = true;
-				GameOver("Out of lives. Better luck next time.");
+
+				GameOver("Out of lives. Better luck next time." +
+					"\nRestart Game? Y/N ");
 			}
-			else if (Score == 1008)
+			else if (Score >= 1008)
 			{
 				gameOverTriggered = true;
-				GameOver("Congrats! You bashed all those bricks!");
+				GameOver("Congrats! You bashed all those bricks!" +
+					"\nRestart Game? Y/N");
 			}
 		}
 
+		//private void GameOver(string message)
+		//{
+		//	MessageBox.Show(message);
+		//	//ResetGameState();
+		//	GameOverTriggered?.Invoke(this, EventArgs.Empty);
+		//}
+
 		private void GameOver(string message)
 		{
-			MessageBox.Show(message);
-			//ResetGameState();
-			GameOverTriggered?.Invoke(this, EventArgs.Empty);
+			GameOverTriggered?.Invoke(this, new GameOverEventArgs(message));
 		}
 
 		public event EventHandler GameOverTriggered;
 
-		private void ResetGameState()
+		public void ResetGameState()
 		{
+			ball = new Ball();
+
 			Score = 0;
 			Lives = 3;
 			ball.BallXSpeed = ball.BallYSpeed = Ball.InitialBallSpeed;
