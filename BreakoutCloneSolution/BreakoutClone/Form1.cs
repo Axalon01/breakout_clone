@@ -185,7 +185,7 @@ namespace BreakoutClone
 			}
 		}
 
-		private void CheckBrickCollision()
+		private bool CheckBrickCollision()
 		{
 
 			for (int row = 0; row < bricks.GetLength(0); row++)
@@ -220,10 +220,12 @@ namespace BreakoutClone
 
 						brick.IsDestroyed = true;
 						gameManager.Score += brick.PointValue;
-						return;
+						return true; //Signals collision
 					}
 				}
 			}
+
+			return false; //No collision happened
 		}
 
 		private void CheckBallCollisions()
@@ -341,8 +343,23 @@ namespace BreakoutClone
 		{
 			if (ball.isLaunched == true)
 			{
-				ball.BallX += ball.BallXSpeed;
-				ball.BallY += ball.BallYSpeed;
+				int steps = Math.Max(Math.Abs(ball.BallXSpeed), Math.Abs(ball.BallYSpeed));
+				float newX = ball.BallX;
+				float newY = ball.BallY;
+
+				for (int i = 0; i < steps; i++)
+				{
+					newX += (float)ball.BallXSpeed / steps;
+					newY += (float)ball.BallYSpeed / steps;
+
+					ball.BallX = (int)newX;
+					ball.BallY = (int)newY;
+
+					if (CheckBrickCollision())
+					{
+						break; //Stop moving this frame after the first collision
+					}
+				}
 			}
 			else
 			{
