@@ -209,12 +209,12 @@ namespace BreakoutClone
 						// Decide which side to bounce
 						if (overlapX < overlapY)
 						{
-							// Hit from left or right ¨ flip X
+							// Hit from left or right, flip X
 							ball.BallXSpeed = -ball.BallXSpeed;
 						}
 						else
 						{
-							// Hit from top or bottom ¨ flip Y
+							// Hit from top or bottom, flip Y
 							ball.BallYSpeed = -ball.BallYSpeed;
 						}
 
@@ -225,8 +225,6 @@ namespace BreakoutClone
 				}
 			}
 		}
-
-
 
 		private void CheckBallCollisions()
 		{
@@ -289,45 +287,41 @@ namespace BreakoutClone
 			{
 				//Ball hit the top of the paddle
 				ball.BallY = paddle.PaddleY - ball.BallSize - paddle.paddleOffset;
-				ball.BallYSpeed = -Math.Abs(ball.BallYSpeed);
 
-                //Tweak X speed depending on where it hit the paddle
-                int paddleCenter = paddle.PaddleX + (paddle.PaddleWidth / 2);
-                int ballCenterX = ball.BallX + (ball.BallSize / 2);
-                int offsetFromCenter = ballCenterX - paddleCenter;
+				int ballCenterX = ball.BallX + (ball.BallSize / 2);
+				//Divide the paddle into five equal zones
+				int zoneWidth = paddle.PaddleWidth / 5;
+				//Figure out which zone the ball hit
+				int offsetFromLeft = ballCenterX - paddle.PaddleX;
+				//Divide by zone width to get the zone index 0-4)
+				int zoneIndex = offsetFromLeft / zoneWidth;
 
-				//Normalize to -1 t0 +1
-				float relativeOffset = (float)offsetFromCenter / (paddle.PaddleWidth / 2);
-
-				//Use current speed
-				int totalSpeed = ball.CurrentBallSpeed;
-
-				//Calculate new X and Y speeds
-                ball.BallXSpeed = (int)(relativeOffset * totalSpeed);
-
-				//Keep the speed constant by adjusting Y
-				int xSquared = ball.BallXSpeed * ball.BallXSpeed;
-				int ySquared = (totalSpeed * totalSpeed) - xSquared;
-
-				//Safety check (avoid square root of negative if rounding errors happen)
-				if (ySquared < 0) ySquared = 0;
-
-				ball.BallYSpeed = -(int)Math.Sqrt(ySquared); //Negative so it always goes upward
-
-				// --- Clamps to prevent boring/infinite loops ---
-
-				//Prevent perfectly verticle bounces
-				if (ball.BallXSpeed == 0)
+				if (zoneIndex == 0)
 				{
-					ball.BallXSpeed = rng.Next(0, 2) == 0 ? 1 : -1; //Tiny nudge left or right
+					ball.BallXSpeed = -10;
+					ball.BallYSpeed = -8;
 				}
-
-				//Prevent completely horizontal bounces
-				if (Math.Abs(ball.BallYSpeed) < 2)
+				else if (zoneIndex == 1)
 				{
-					ball.BallYSpeed = ball.BallYSpeed < 0 ? -2 : 2; //Force at least two upward
+					ball.BallXSpeed = -6;
+					ball.BallYSpeed = -12;
 				}
-            }
+				else if (zoneIndex == 2)
+				{
+					ball.BallXSpeed = 4;
+					ball.BallYSpeed = -14;
+				}
+				else if (zoneIndex == 3)
+				{
+					ball.BallXSpeed = 6;
+					ball.BallYSpeed = -12;
+				}
+				else // zoneIndex == 4
+				{
+					ball.BallXSpeed = 10;
+					ball.BallYSpeed = -8;
+				}
+			}
 		}
 
 		private bool AllBricksDestroyed()
