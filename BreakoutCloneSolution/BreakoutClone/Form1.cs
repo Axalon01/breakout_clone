@@ -2,6 +2,8 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Reflection.PortableExecutable;
+using System.Media;
+using NAudio.Wave;
 
 namespace BreakoutClone
 {
@@ -21,6 +23,9 @@ namespace BreakoutClone
 		private bool pendingRepopulate = false;
 
 		private bool awaitingRestart = false;
+
+		private WaveOutEvent outputDevice;
+		private AudioFileReader audioFile;
 
 		public Form1()
 		{
@@ -125,6 +130,14 @@ namespace BreakoutClone
 				Application.Exit();
 			}
         }
+
+		private void PlayBrickSound()
+		{
+			outputDevice = new WaveOutEvent();
+			audioFile = new AudioFileReader("Assets/brickbash.wav");
+			outputDevice.Init(audioFile);
+			outputDevice.Play();
+		}
 
 
         // Key up event to stop paddle
@@ -239,6 +252,7 @@ namespace BreakoutClone
 						}
 
 						brick.IsDestroyed = true;
+						PlayBrickSound();
 						gameManager.Score += brick.PointValue;
 						return true; //Signals collision
 					}
