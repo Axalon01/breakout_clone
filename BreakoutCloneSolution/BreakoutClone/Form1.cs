@@ -139,9 +139,25 @@ namespace BreakoutClone
 			outputDevice.Play();
 		}
 
+		private void PlayPaddeSound()
+		{
+			outputDevice = new WaveOutEvent();
+			audioFile = new AudioFileReader("Assets/paddlebounce.wav");
+			outputDevice.Init(audioFile);
+			outputDevice.Play();
+		}
 
-        // Key up event to stop paddle
-        private void KeyIsUp(object sender, KeyEventArgs e)
+		private void PlayWallSound()
+		{
+			outputDevice = new WaveOutEvent();
+			audioFile = new AudioFileReader("Assets/wallbounce.wav");
+			outputDevice.Init(audioFile);
+			outputDevice.Play();
+		}
+
+
+		// Key up event to stop paddle
+		private void KeyIsUp(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Left)
 			{
@@ -269,13 +285,17 @@ namespace BreakoutClone
 			{
 				ball.BallX = 0;
                 ball.BallXSpeed = Math.Abs(ball.BallXSpeed);
-            }
+
+				PlayWallSound();
+			}
 
 			//Bounce off right wall
 			if (ball.BallX + ball.BallSize > this.ClientSize.Width)
 			{
 				ball.BallX = this.ClientSize.Width - ball.BallSize;
 				ball.BallXSpeed = -Math.Abs(ball.BallXSpeed);
+
+				PlayWallSound();
 			}
 
 			//Bounce off top of screen
@@ -283,6 +303,8 @@ namespace BreakoutClone
 			{
 				ball.BallY = 0;
 				ball.BallYSpeed = Math.Abs(ball.BallYSpeed);
+
+				PlayWallSound();
 			}
 
 			if (ball.BallY + ball.BallSize > this.ClientSize.Height + gameManager.BottomBoundaryOffset)
@@ -323,6 +345,8 @@ namespace BreakoutClone
 			{
 				//Ball hit the top of the paddle
 				ball.BallY = paddle.PaddleY - ball.BallSize - paddle.paddleOffset;
+
+				PlayPaddeSound();
 
 				int ballCenterX = ball.BallX + (ball.BallSize / 2);
 				//Divide the paddle into five equal zones
