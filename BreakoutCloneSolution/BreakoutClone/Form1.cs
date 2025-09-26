@@ -396,6 +396,9 @@ namespace BreakoutClone
 					ball.BallXSpeed = 10;
 					ball.BallYSpeed = -8;
 				}
+
+				//Add a small bit of randomness to prevent ball getting stuck in loops
+				ball.BallXSpeed += rng.Next(-1, 2); //-1, 0, or +1
 			}
 		}
 
