@@ -30,6 +30,7 @@
 		{
 			components = new System.ComponentModel.Container();
 			GameTimer = new System.Windows.Forms.Timer(components);
+			RevealTimer = new System.Windows.Forms.Timer(components);
 			SuspendLayout();
 			// 
 			// GameTimer
@@ -37,6 +38,12 @@
 			GameTimer.Enabled = true;
 			GameTimer.Interval = 20;
 			GameTimer.Tick += GameTimerEvent;
+			// 
+			// RevealTimer
+			// 
+			RevealTimer.Enabled = true;
+			RevealTimer.Interval = 50;
+			RevealTimer.Tick += RevealTimer_Tick;
 			// 
 			// Form1
 			// 
@@ -51,5 +58,6 @@
 		#endregion
 
 		private System.Windows.Forms.Timer GameTimer;
+		private System.Windows.Forms.Timer RevealTimer;
 	}
 }

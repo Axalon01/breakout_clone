@@ -17,8 +17,9 @@ namespace BreakoutClone
         public int PointValue { get; set; }
 
         public bool IsDestroyed { get; set; } = false;
+        public bool IsVisible { get; set; } = false;
 
-        public void Draw(Graphics g)
+		public void Draw(Graphics g)
         {
             g.FillRectangle(Brush, BrickX, BrickY, BrickWidth, BrickHeight);
             using (Pen pen = new Pen(Color.Black, 2))

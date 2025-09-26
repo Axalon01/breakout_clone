@@ -47,13 +47,6 @@ namespace BreakoutClone
 			}
 		}
 
-		//private void GameOver(string message)
-		//{
-		//	MessageBox.Show(message);
-		//	//ResetGameState();
-		//	GameOverTriggered?.Invoke(this, EventArgs.Empty);
-		//}
-
 		private void GameOver(string message)
 		{
 			GameOverTriggered?.Invoke(this, new GameOverEventArgs(message));
@@ -67,6 +60,7 @@ namespace BreakoutClone
 
 			Score = 0;
 			Lives = 3;
+			gameOverTriggered = false;
 			ball.BallXSpeed = ball.BallYSpeed = Ball.InitialBallSpeed;
 		}
 	}
