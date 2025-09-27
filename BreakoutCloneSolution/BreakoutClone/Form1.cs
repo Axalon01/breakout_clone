@@ -111,16 +111,16 @@ namespace BreakoutClone
 			{
 				gameManager.goRight = true;
 			}
-			else if (e.KeyCode == Keys.K)
-			{
-				for (int row = 0; row < bricks.GetLength(0); row++)
-				{
-					for (int col = 0; col < bricks.GetLength(1); col++)
-					{
-						bricks[row, col].IsDestroyed = true;
-					}
-				}
-			}
+			//else if (e.KeyCode == Keys.K)
+			//{
+			//	for (int row = 0; row < bricks.GetLength(0); row++)
+			//	{
+			//		for (int col = 0; col < bricks.GetLength(1); col++)
+			//		{
+			//			bricks[row, col].IsDestroyed = true;
+			//		}
+			//	}
+			//}
 			else if (e.KeyCode == Keys.Y)
 			{
 				//Reset game
