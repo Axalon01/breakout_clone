@@ -10,10 +10,18 @@
 
   <ItemGroup>
     <None Remove="Assets\brickbash.wav" />
+    <None Remove="Assets\paddlebounce.wav" />
+    <None Remove="Assets\wallbounce.wav" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\brickbash.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\paddlebounce.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\wallbounce.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
