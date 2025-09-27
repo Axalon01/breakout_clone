@@ -238,14 +238,18 @@ namespace BreakoutClone
 			paddle.PaddleX = Math.Max(0, Math.Min(paddle.PaddleX, this.ClientSize.Width
 				- paddle.PaddleWidth));
 
-			if (gameManager.goLeft && paddle.PaddleX > 0)
+			if (isRevealing)
+				return;
 			{
-				paddle.PaddleX -= gameManager.PlayerSpeed;
-			}
+				if (gameManager.goLeft && paddle.PaddleX > 0)
+				{
+					paddle.PaddleX -= gameManager.PlayerSpeed;
+				}
 
-			if (gameManager.goRight && paddle.PaddleX + paddle.PaddleWidth < this.ClientSize.Width)
-			{
-				paddle.PaddleX += gameManager.PlayerSpeed;
+				if (gameManager.goRight && paddle.PaddleX + paddle.PaddleWidth < this.ClientSize.Width)
+				{
+					paddle.PaddleX += gameManager.PlayerSpeed;
+				} 
 			}
 		}
 
